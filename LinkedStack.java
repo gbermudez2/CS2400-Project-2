@@ -7,7 +7,8 @@ Project 2
 Jose Gutierrez, Drew Higashigawa, Gabriel Bermudez
 */
 
-public final class LinkedStack<T> implements StackInterface<T>{
+public class LinkedStack<T> implements StackInterface<T>{
+
     // references the first node
     private Node topNode;
 
@@ -44,7 +45,6 @@ public final class LinkedStack<T> implements StackInterface<T>{
         topNode = null;
     }
 
-    
     private class Node<T>{
         // Get the data of the chosen node
         private T data;
