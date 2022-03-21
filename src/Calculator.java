@@ -1,12 +1,16 @@
+package src;
+
 
 
 public class Calculator<T> extends LinkedStack {
     public static void main(String args[]){
         System.out.println("Initializing new infix expression");
-            StackInterface<String> stack1 = new LinkedStack<>();
+        convertToPostfix("a*b/(c-a)+d*e");
+        System.out.println("Evaluating postfix expression");
+        evaluatePostfix("23*42-/56*+");
     }
 
-    public int Precedence(char ch){
+    public static int Precedence(char ch){
         switch (ch){
             case '+': case '-':
                 return 1;
@@ -18,9 +22,9 @@ public class Calculator<T> extends LinkedStack {
         return -1;
     }
 
-    public String convertToPostfix(String infix){
+    public static String convertToPostfix(String infix){
         StackInterface<Character> operatorStack = new LinkedStack<>();
-        String postfix = null;
+        String postfix = "";
 
         for (int i = 0; i < infix.length(); i++){
             char nextCharacter = infix.charAt(i);
@@ -59,6 +63,52 @@ public class Calculator<T> extends LinkedStack {
             Character topOperator = operatorStack.pop();
             postfix += topOperator;
         }
+
+        System.out.println(postfix);
         return postfix;
+    }
+
+    public static int evaluatePostfix(String postfix){
+        StackInterface<Integer> valueStack = new LinkedStack<>();
+
+        for (int i = 0; i < postfix.length(); i++){
+            char nextCharacter = postfix.charAt(i);
+            
+            int operandTwo = valueStack.pop();
+            int operandOne = valueStack.pop();
+
+            if (Character.isDigit(nextCharacter)){
+                valueStack.push(nextCharacter - '0');
+            }
+
+            switch(nextCharacter){
+                case ' ':
+                break;
+
+                case '+':
+                valueStack.push(operandTwo + operandOne);
+                break;
+                 
+                case '-':
+                valueStack.push(operandTwo - operandOne);
+                break;
+                 
+                case '/':
+                valueStack.push(operandTwo / operandOne);
+                break;
+                 
+                case '*':
+                valueStack.push(operandTwo * operandOne);
+                break;
+
+                case '^':
+                valueStack.push((int)Math.pow(operandTwo, operandOne));
+                break;
+
+                default: break;
+            }
+        }
+        System.out.println(valueStack.peek());
+        return valueStack.peek();
     }
 }
