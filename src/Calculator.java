@@ -2,7 +2,7 @@ package src;
 
 
 
-public class Calculator<T> extends LinkedStack {
+public class Calculator<T> {
     public static void main(String args[]){
         System.out.println("Initializing new infix expression");
         convertToPostfix("a*b/(c-a)+d*e");
@@ -68,46 +68,55 @@ public class Calculator<T> extends LinkedStack {
         return postfix;
     }
 
-    public static int evaluatePostfix(String postfix){
-        StackInterface<Integer> valueStack = new LinkedStack<>();
+    public static int evaluatePostfix(String prePostfix){
+        StackInterface<Integer> valueStack = new ResizeableArrayStack<>();
+        char[] postfix = new char[prePostfix.length()];
 
-        for (int i = 0; i < postfix.length(); i++){
-            char nextCharacter = postfix.charAt(i);
-            
-            int operandTwo = valueStack.pop();
-            int operandOne = valueStack.pop();
+        for (int j = 0; j < prePostfix.length(); j++){
+            postfix[j] = prePostfix.charAt(j);
+        }
+
+        for (int i = 0; i < postfix.length; i++){
+            char nextCharacter = postfix[i];
 
             if (Character.isDigit(nextCharacter)){
-                valueStack.push(nextCharacter - '0');
+                valueStack.push((int)nextCharacter - '0');
             }
+            else {
+                int operandTwo = valueStack.pop();
+                int operandOne = valueStack.pop();
 
-            switch(nextCharacter){
-                case ' ':
-                break;
+                switch(nextCharacter){
+                    case ' ':
+                    break;
 
-                case '+':
-                valueStack.push(operandTwo + operandOne);
-                break;
+                    case '+':
+                    valueStack.push(operandTwo + operandOne);
+                    break;
                  
-                case '-':
-                valueStack.push(operandTwo - operandOne);
-                break;
+                    case '-':
+                    valueStack.push(operandOne - operandTwo);
+                    break;
                  
-                case '/':
-                valueStack.push(operandTwo / operandOne);
-                break;
+                    case '/':
+                    valueStack.push(operandOne / operandTwo);
+                    break;
                  
-                case '*':
-                valueStack.push(operandTwo * operandOne);
-                break;
+                    case '*':
+                    valueStack.push(operandTwo * operandOne);
+                    break;
 
-                case '^':
-                valueStack.push((int)Math.pow(operandTwo, operandOne));
-                break;
+                    case '^':
+                    valueStack.push((int)Math.pow(operandTwo, operandOne));
+                    break;
 
-                default: break;
+                    default: break;
+                }
             }
+ 
+            
         }
+
         System.out.println(valueStack.peek());
         return valueStack.peek();
     }

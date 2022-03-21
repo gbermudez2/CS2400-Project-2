@@ -24,6 +24,7 @@ public class LinkedStack<T> implements StackInterface<T>{
     }
 
     public T pop(){
+        // Takes the top node and removes it
         T top = peek();
         topNode = topNode.getNextNode();
         return top;
@@ -31,6 +32,7 @@ public class LinkedStack<T> implements StackInterface<T>{
 
     public T peek()
     {
+        // Returns the data of the top node
         if (isEmpty())
             throw new EmptyStackException();
         else
@@ -39,11 +41,13 @@ public class LinkedStack<T> implements StackInterface<T>{
 
     public boolean isEmpty()
     {
+        // Checks if the stack is empty
         return topNode == null;
     }
     
     public void clear()
     {
+        // Clears the stack
         topNode = null;
     }
 
